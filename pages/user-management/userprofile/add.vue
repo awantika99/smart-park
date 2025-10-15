@@ -1,0 +1,3 @@
+<template>
+   <FormUserprofile></FormUserprofile>
+</template>

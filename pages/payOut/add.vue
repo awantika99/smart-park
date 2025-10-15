@@ -1,0 +1,4 @@
+<template>
+  
+    <FormPayout></FormPayout>
+ </template>

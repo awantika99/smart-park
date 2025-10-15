@@ -1,0 +1,25 @@
+<template>
+  <NuxtLayout
+    :class="{
+      'dark': $colorMode.value === 'dark',
+    }"
+  >
+    <NuxtPage />
+  </NuxtLayout>
+</template>
+<script setup>
+const colorMode = useColorMode()
+colorMode.value='light'
+colorMode.preference = 'light'
+</script>
+<style>
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
+</style>

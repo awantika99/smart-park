@@ -1,0 +1,31 @@
+version: 0.2
+env:
+  shell: bash
+phases:
+  install:
+    commands:
+      - n 18.18.0
+  build:
+    commands:
+#      - node --max-old-space-size=12096
+#      - export NODE_OPTIONS="--max-old-space-size=12096"
+      - echo "Running the Nuxt build...."
+      - npm i --legacy-peer-deps
+#      - npm i @babel/plugin-proposal-private-property-in-object
+#      - npm install terser@3.14.1 
+#      - REACT_APP_API_URL=$ReactAppApiUrl REACT_APP_EC2_URL=$ReactAppEc2Url REACT_APP_ENV=$ReactAppEnv npm run-script build
+      - npm run generate
+      - echo "Successfully completed the Nuxt build..."
+  post_build:
+    commands:
+      - echo "Uploading the build into the $BucketName S3"
+      - . ./aws-profile-setup.sh
+      - aws s3 cp dist s3://$BucketName/ --recursive
+      - echo "Successfully Uploaded the react build into S3  bucket"
+      - aws cloudfront create-invalidation --distribution-id $CloudFrontID --paths "/*"
+
+artifacts:
+  type: zip
+  files: "**/*"
+
+########################
