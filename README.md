@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
@@ -40,3 +41,19 @@ npm run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+=======
+@"
+# Smart Park 🚗
+
+Smart Park helps users find available parking spaces easily.
+
+## Features
+- Real-time spot tracking
+- Smart recommendations
+- Easy-to-use interface
+
+## Installation
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/awantika99/smart-park.git
+>>>>>>> 3915eb45ee53b64c4c3ce74a6411c5e125306d06
