@@ -17,7 +17,7 @@ export const useApi = async (
 ) => {
   try {
     const config = useRuntimeConfig()
-    const { $auth } = useNuxtApp()
+    // const { $auth } = useNuxtApp()
 
     options = {
       ...options,
@@ -25,7 +25,7 @@ export const useApi = async (
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-        'Authorization': `Bearer ${$auth?.user.value?.Token}`
+        // 'Authorization': `Bearer ${$auth?.user.value?.Token}`
       }
     }
     console.log('options',options)

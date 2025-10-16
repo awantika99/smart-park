@@ -1,37 +1,55 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // modules: ['@unocss/nuxt', 'nuxt-icon', '@nuxtjs/tailwindcss'],
   modules: ['nuxt-icon', '@nuxt/ui', '@nuxtjs/color-mode'],
+
   build: {
     transpile: ['@vuepic/vue-datepicker']
   },
 
-
   runtimeConfig: {
+    // ⚠️ Everything under `public` is exposed to the browser
     public: {
-      API_BASE_URL: process.env.API_BASE_URL || 'https://mirspecf.mtradeasia.com:8443/api' ,
+      API_BASE_URL: 'https://mirspecf.mtradeasia.com:8443/api',
+      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY || ''
     },
   },
+
   typescript: {
     typeCheck: false,
   },
+
   ssr: false,
+
+  // temporarily remove authentication middleware for public access
   router: {
     options: {
       // hashMode: true,
     },
-    middleware: ['auth']
+    // Comment out or remove auth middleware to bypass login protection
+    // middleware: ['auth']
   },
+
   colorMode: {
-    preference: 'light', // default value of $colorMode.preference
+    preference: 'light',
     fallback: 'light',
   },
+
   app: {
     pageTransition: {
       name: 'page',
-      mode: 'out-in', // default
+      mode: 'out-in',
+    },
+    head: {
+      script: [
+        {
+          src: `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&libraries=places`,
+          async: true,
+          defer: true,
+        },
+      ],
     },
   },
+
   devtools: {
     enabled: true,
   },

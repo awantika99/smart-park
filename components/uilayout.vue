@@ -1,20 +1,22 @@
 
 <template>
-  <div class="w-full md:w-1/2"
-    style="background-image: url('/images/back.jpg'); background-size: cover; background-position: center center;">
+  <div class="w-full md:w-1/2 bg-gray-100">
     <div class="d-flex flex-column align-items-center justify-content-center background-light">
       <div class="row align-items-center">
-        <div class="d-flex flex-column justify-content-center align-items-center mt-40 px-10 ">
+        <div class="d-flex flex-column justify-content-center align-items-center mt-40 px-10">
           <div class="h-50 w-50 lg:ml-5 flex items-center justify-center">
-
-            <img src="/images/logo.jpg" alt="logo"
-                    class="h-full object-center dark:invert" />
+            <img
+              src="/images/logo.jpg"
+              alt="logo"
+              class="h-full object-center dark:invert"
+            />
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 
 const emit = defineEmits(['update:modelValue'])
