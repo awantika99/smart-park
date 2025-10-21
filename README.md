@@ -39,10 +39,7 @@ Locally preview production build:
 npm run preview
 ```
 
-<<<<<<< HEAD
-=======
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
->>>>>>> 4563b54759eaf68011b51ef4e3f17f3645621548
+
 
 @"
 # Smart Park 🚗

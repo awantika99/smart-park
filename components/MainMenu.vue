@@ -59,10 +59,10 @@ export default {
     return {
       menuItems: [
             { name: 'Dashboard', icon: 'home', color:'#00A389',isActivAe: false },
-            { name: 'Account Setup', icon: 'person',color:'#FFBB54', isActive: false },
-            { name: 'Configurations', icon: 'settings', color:'#ffffff',isActive: false },
-            { name: 'Payment', icon: 'attach-money',color:'#FF5B5B', isActive: false },
-            { name: 'Reports', icon: 'bar-chart', color:'#58CDFF',isActive: false },
+            // { name: 'Account Setup', icon: 'person',color:'#FFBB54', isActive: false },
+            // { name: 'Configurations', icon: 'settings', color:'#ffffff',isActive: false },
+            // { name: 'Payment', icon: 'attach-money',color:'#FF5B5B', isActive: false },
+            // { name: 'Reports', icon: 'bar-chart', color:'#58CDFF',isActive: false },
         
          
         // Add more menu items here

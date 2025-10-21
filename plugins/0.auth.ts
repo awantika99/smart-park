@@ -12,7 +12,9 @@ export interface UserData {
 const LOGIN_ROUTE = '/login'
 const POST_LOGIN_ROUTE = '/dashboard'
 const POST_LOGOUT_ROUTE = '/login'
-const PROTECT_BY_DEFAULT = true
+
+// 🚫 Disable route protection
+const PROTECT_BY_DEFAULT = false
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   // Skip plugin when rendering error page
@@ -20,121 +22,101 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     return {}
   }
 
+  // Fake user cookie (not needed for now)
   const user: CookieRef<UserData | null> = useStatefulCookie('auth')
-  const storedToken = localStorage.getItem('authToken')
-  if (storedToken) {
-    user.value = {
-      Token: storedToken,
-      User: JSON.parse(localStorage.getItem('authUser') || '{}')
-    }
-  }
-  const loggedIn: ComputedRef<boolean> = computed(() => !!useStatefulCookie('auth').value?.User?.Id)
 
-  // Create a ref to know where to redirect the user when logged in
-  // if this is set to login route, it might create infinite redirect?
+  // 🔹 Disabled localStorage-based token logic
+  // const storedToken = localStorage.getItem('authToken')
+  // if (storedToken) {
+  //   user.value = {
+  //     Token: storedToken,
+  //     User: JSON.parse(localStorage.getItem('authUser') || '{}')
+  //   }
+  // }
+
+  // 🔹 Disable loggedIn computed property
+  const loggedIn: ComputedRef<boolean> = computed(() => true) // always logged in ✅
+
+  // 🔹 Skip redirect tracking
   const redirectTo: Ref<string | undefined> = useStatefulCookie('authRedirect')
-
-  /**
-   * Toggle route protection using:
-   *
-   * definePageMeta({
-   *  auth: boolean
-   * })
-   */
-  //
 
   const setUser = (userData: UserData) => {
     user.value = userData
   }
 
   const logIn = (userData: UserData) => {
-
-    setUser(userData)
-    handleRedirect()
+    // setUser(userData)
+    // handleRedirect()
+    console.log('Login bypassed — user automatically logged in.')
   }
 
   const logOut = async () => {
-    user.value = null
-    await navigateTo(POST_LOGOUT_ROUTE)
+    // user.value = null
+    // await navigateTo(POST_LOGOUT_ROUTE)
+    console.log('Logout bypassed — no redirect applied.')
   }
 
-  watch(user, (newUser) => {
-    if (newUser) {
-      console.log('newuser',newUser)
-      localStorage.setItem('authToken', newUser.Token)
-      localStorage.setItem('authUser', JSON.stringify(newUser.User))
-    } else {
-      localStorage.removeItem('authToken')
-      localStorage.removeItem('authUser')
-    }
-  })
+  // 🔹 Disable localStorage user sync
+  // watch(user, (newUser) => {
+  //   if (newUser) {
+  //     localStorage.setItem('authToken', newUser.Token)
+  //     localStorage.setItem('authUser', JSON.stringify(newUser.User))
+  //   } else {
+  //     localStorage.removeItem('authToken')
+  //     localStorage.removeItem('authUser')
+  //   }
+  // })
+
   const clearRedirect = () => {
-    if (user.value) {
-      // user.value.redirect_url = undefined
-    }
-    //redirectTo.value = undefined
+    // No-op
   }
 
   async function handleRedirect(redirect?: string) {
-    if (typeof redirect === 'undefined') {
-      redirect = redirectTo.value || getRedirectUrl()
-    }
-    if (redirect) {
-      clearRedirect()
-      if (redirect.startsWith('http')) {
-        await navigateTo(POST_LOGIN_ROUTE)
-      } else {
-        await navigateTo(redirect)
-      }
-    } else {
-      await navigateTo(POST_LOGIN_ROUTE)
-    }
+    // 🔹 Skip redirect logic
+    console.log('Redirect bypassed — direct navigation allowed.')
   }
 
   function getRedirectUrl() {
-    const route = useRoute()
-    return (route.query.return_url as string) || user.value?.redirect_url
+    return '/'
   }
 
-  addRouteMiddleware(
-    'auth',
-    async (to) => {
-      console.log('meta', to)
-      if (
-        (to.meta.auth || (PROTECT_BY_DEFAULT && to.meta.auth !== false)) &&
-        !loggedIn.value && to.fullPath !== LOGIN_ROUTE
-      ) {
-        console.log('logout')
-        //redirectTo.value = to.path
-        console.log('login',LOGIN_ROUTE)
-        return LOGIN_ROUTE
-      }
-      if(loggedIn.value && ['login','forgetpassword'].includes(to.name)){
-        return '/payout'
-      }
-    },
-    { global: true }
-  )
+  // 🚫 Disable global route auth middleware
+  // addRouteMiddleware(
+  //   'auth',
+  //   async (to) => {
+  //     if (
+  //       (to.meta.auth || (PROTECT_BY_DEFAULT && to.meta.auth !== false)) &&
+  //       !loggedIn.value && to.fullPath !== LOGIN_ROUTE
+  //     ) {
+  //       return LOGIN_ROUTE
+  //     }
+  //     if (loggedIn.value && ['login', 'forgetpassword'].includes(to.name)) {
+  //       return '/payout'
+  //     }
+  //   },
+  //   { global: true }
+  // )
 
-  const currentRoute = useRoute()
+  // Disable loggedIn watcher
+  // const currentRoute = useRoute()
+  // if (process.client) {
+  //   watch(loggedIn, async (loggedIn) => {
+  //     if (!loggedIn && currentRoute.meta.auth) {
+  //       redirectTo.value = currentRoute.path
+  //       await navigateTo(LOGIN_ROUTE)
+  //     }
+  //   })
+  // }
 
-  if (process.client) {
-    watch(loggedIn, async (loggedIn) => {
-      if (!loggedIn && currentRoute.meta.auth) {
-        redirectTo.value = currentRoute.path
-        await navigateTo(LOGIN_ROUTE)
-      }
-    })
-  }
-
-  if (loggedIn.value && currentRoute.path === LOGIN_ROUTE) {
-    await navigateTo(redirectTo.value || '/')
-  }
+  // Always allow login page access
+  // if (loggedIn.value && currentRoute.path === LOGIN_ROUTE) {
+  //   await navigateTo(redirectTo.value || '/')
+  // }
 
   return {
     provide: {
       auth: {
-        user: user,
+        user,
         loggedIn,
         redirectTo,
         setUser,

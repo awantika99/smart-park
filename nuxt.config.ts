@@ -9,8 +9,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // ⚠️ Everything under `public` is exposed to the browser
     public: {
-      API_BASE_URL: 'https://mirspecf.mtradeasia.com:8443/api',
-      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY || ''
+      runtimeConfig: {
+  public: {
+    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY'
+  }
+}
+
     },
   },
 
